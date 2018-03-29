@@ -39,4 +39,4 @@ fmt.Println(r)
 - [阿里云官方OSS Golang SDK](https://github.com/aliyun/aliyun-oss-go-sdk)
 
 # LICENSE
-[MIT License](https://github.com/lily-lee/qcloud-cos-go-sdk-v5/blob/master/LICENSE)
+[MIT License](https://github.com/lily-lee/qcloud-cos-go-sdk/blob/master/LICENSE)
