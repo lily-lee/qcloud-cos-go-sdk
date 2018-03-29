@@ -2,6 +2,11 @@
 腾讯云 COS Golang SDK (XML API)
 
 # 安装
+```bash
+
+go get github.com/lily-lee/qcloud-cos-go-sdk/cos
+
+```
 
 # 使用
 
