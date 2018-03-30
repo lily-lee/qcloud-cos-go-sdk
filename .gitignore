@@ -2,3 +2,4 @@
 .idea/
 .DS_Store
 files/
+cos/client_test_local.go
