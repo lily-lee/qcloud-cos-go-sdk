@@ -7,7 +7,7 @@ import (
 )
 
 func TestGetService(t *testing.T) {
-	c, _ := NewClient("1234567890", "AKIDXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", "f4fyXXXXXXXXXXXXXXXXXXXXXXXXXXXX", "https", 600)
+	//c, _ := NewClient("1234567890", "AKIDXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", "f4fyXXXXXXXXXXXXXXXXXXXXXXXXXXXX", "https", 600)
 
 	//c.GetService()
 
@@ -47,7 +47,7 @@ func TestGetService(t *testing.T) {
 	//})
 	//c.GetBucketACL("lilytest-1234567890", "ap-chengdu")
 
-	b, _ := c.NewBucket("lilytest-1234567890", "ap-chengdu")
+	//b, _ := c.NewBucket("lilytest-1234567890", "ap-chengdu")
 	//b.PutObjectFromFile("test.txt", "../files/test.txt", nil)
 	////filename := "莫娣.Maudie.2017.BD720P.x264.官方中文字幕.btrenren.torrent"
 	////filename := "a.txt"

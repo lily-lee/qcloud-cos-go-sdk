@@ -41,7 +41,7 @@ type Contents struct {
 	Key          string    `xml:"Key"`
 	LastModified time.Time `xml:"LastModified"`
 	ETag         string    `xml:"ETag"`
-	Size         string    `xml:"Size"`
+	Size         int64     `xml:"Size"`
 	Owner        Owner     `xml:"Owner"`
 	StorageClass string    `xml:"StorageClass"`
 }
@@ -176,14 +176,14 @@ type GetBucketACLResult struct{}
 
 // CompleteMultipartUpload is the request data type of bucket.CompleteMultipartUpload()
 type CompleteMultipartUpload struct {
-	Part Part `xml:"Part"`
+	Part []Part `xml:"Part"`
 }
 
 type Part struct {
-	PartNumber   string    `xml:"PartNumber"`
+	PartNumber   int       `xml:"PartNumber"`
 	LastModified time.Time `xml:"LastModified"`
 	ETag         string    `xml:"ETag"`
-	Size         string    `xml:"Size"`
+	Size         int64     `xml:"Size"`
 }
 
 type CompleteMultipartUploadResult struct {
