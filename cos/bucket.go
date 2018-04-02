@@ -26,10 +26,10 @@ type Bucket struct {
 // 注意：
 // 建议您及时完成分块上传或者舍弃分块上传，因为已上传但是未终止的块会占用存储空间进而产生存储费用。
 // URI: /<ObjectName>
-func (bucket Bucket) AbortMultipartUpload(objectName, uploadId string) error {
-	reqUrl := bucket.makeReqUrl(fmt.Sprintf("/%s?uploadId=%s", objectName, uploadId))
+func (bucket Bucket) AbortMultipartUpload(imur InitiateMultipartUploadResult) error {
+	reqUrl := bucket.makeReqUrl(fmt.Sprintf("/%s?uploadId=%s", imur.Key, imur.UploadID))
 	params := map[string]string{
-		"uploadId": uploadId,
+		"uploadId": imur.UploadID,
 	}
 	resp, err := bucket.do("DELETE", reqUrl, nil, params, nil)
 	if err != nil {
@@ -54,14 +54,13 @@ func (bucket Bucket) AbortMultipartUpload(objectName, uploadId string) error {
 //
 // 注意：
 // 建议您及时完成分块上传或者舍弃分块上传，因为已上传但是未终止的块会占用存储空间进而产生存储费用
-// TODO data 换成 结构体，然后在此方法中 xml.Marshal 转换。。。
 // URI: /<ObjectName>
-func (bucket Bucket) CompleteMultipartUpload(objectName, uploadId string, param CompleteMultipartUpload) (CompleteMultipartUploadResult, error) {
+func (bucket Bucket) CompleteMultipartUpload(imur InitiateMultipartUploadResult, param CompleteMultipartUpload) (CompleteMultipartUploadResult, error) {
 	var result CompleteMultipartUploadResult
 
-	reqUrl := bucket.makeReqUrl(fmt.Sprintf("/%s?uploadId=%s", objectName, uploadId))
+	reqUrl := bucket.makeReqUrl(fmt.Sprintf("/%s?uploadId=%s", imur.Key, imur.UploadID))
 	params := map[string]string{
-		"uploadId": uploadId,
+		"uploadId": imur.UploadID,
 	}
 
 	data, err := xml.Marshal(param)
