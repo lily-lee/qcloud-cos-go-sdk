@@ -60,7 +60,7 @@ func (conn Conn) Do(method, reqUrl string, headers, params map[string]string, bo
 		params:      params,
 	}
 
-	auth, err := am.GetAuth()
+	auth, err := am.getAuth()
 	if err != nil {
 		log.Println("get auth error:", err)
 		return nil, err

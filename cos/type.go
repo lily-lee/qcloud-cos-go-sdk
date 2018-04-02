@@ -280,3 +280,42 @@ type ListMultipartUploadsRequestParam struct {
 	KeyMarker      string `json:"key-marker,omitempty"`
 	UploadIDMarker string `json:"upload-id-marker,omitempty"`
 }
+
+type STSReturn struct {
+	CodeDesc string  `json:"codeDesc"`
+	Message  string  `json:"message"`
+	Data     STSData `json:"data"`
+	Code     int     `json:"code"`
+}
+
+type STSData struct {
+	ExpiredTime int64 `json:"expiredTime"`
+	Credentials struct {
+		SessionToken string `json:"sessionToken"`
+		TmpSecretId  string `json:"tmpSecretId"`
+		TmpSecretKey string `json:"tmpSecretKey"`
+	} `json:"credentials"`
+	FederatedUser string `json:"federatedUser"`
+}
+
+type STSParam struct {
+	Name            string `json:"name"`            // 用户昵称
+	Policy          string `json:"policy"`          // 策略语法（需要 base64 编码）
+	DurationSeconds int    `json:"durationSeconds"` // 指定临时证书的有效期，单位：秒。 不传的话默认 1800 秒, 最长有效期: 2 小时（7200 秒）
+	Signature       string
+	Timestamp       int64  // 时间戳
+	Nonce           int    // 随机数
+	SecretId        string // 在云 API 密钥上申请的标识身份的 SecretId，一个 SecretId 对应唯一的 SecretKey , 而 SecretKey 会用来生成请求签名 Signature
+	Action          string // Action = GetFederationToken
+	Region          string // 地域参数，用来标识希望操作哪个地域的实例
+}
+
+type AuthParam struct {
+	Method      string            `json:"method"`
+	Bucket      string            `json:"bucket"` // bucketName
+	Region      string            `json:"region"`
+	URI         string            `json:"uri"`
+	Headers     map[string]string `json:"headers"`
+	Params      map[string]string `json:"params"`
+	AuthExpired int64             `json:"authExpired"`
+}

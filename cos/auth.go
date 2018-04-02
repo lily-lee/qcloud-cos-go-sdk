@@ -23,8 +23,8 @@ type authMaker struct {
 	headers, params map[string]string
 }
 
-// GetAuth returns Authorization
-func (am *authMaker) GetAuth() (string, error) {
+// getAuth returns Authorization
+func (am *authMaker) getAuth() (string, error) {
 	authKeys := []string{"q-sign-algorithm=sha1", "q-ak=%s", "q-sign-time=%s", "q-key-time=%s", "q-header-list=%s", "q-url-param-list=%s", "q-signature=%s"}
 
 	signTime := getSignTime(am.startTime, am.authExpired)
@@ -136,22 +136,21 @@ func getParamKeys(params map[string]string) []string {
 }
 
 // make request str
-func getReqStr(method, reqHost, reqPath string, params map[string]interface{}) string {
+func getReqStr(method, reqHost, reqPath string, params map[string]string) string {
 	str := []string{}
 	for k, v := range params {
-		s := fmt.Sprintf("%s=%v", k, v)
+		s := fmt.Sprintf("%s=%s", k, v)
 		str = append(str, s)
 	}
 	sort.Strings(str)
 
 	reqStr := strings.Join(str, "&")
-	return fmt.Sprintf("%s%s%s?%s", method, reqHost, reqPath, reqStr)
+	return fmt.Sprintf("%s%s%s?%s", strings.ToUpper(method), reqHost, reqPath, reqStr)
 }
 
 func sign(s, secretKey string) string {
 	mac := hmac.New(sha1.New, []byte(secretKey))
 	mac.Write([]byte(s))
 	s = base64.StdEncoding.EncodeToString([]byte(mac.Sum(nil)))
-	fmt.Println(url.QueryEscape("0EEm/HtGRr/VJXTAD9tYMth1Bzm3lLHz5RCDv1GdM8s="))
 	return url.QueryEscape(s)
 }

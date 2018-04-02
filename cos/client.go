@@ -3,6 +3,7 @@ package cos
 import (
 	"encoding/xml"
 	"log"
+	"time"
 
 	"fmt"
 	"io"
@@ -47,6 +48,22 @@ func NewClient(appID, secretID, secretKey, scheme string, authExpired int64, opt
 	log.Println(client)
 
 	return client, err
+}
+
+func (client Client) GetAuth(param AuthParam) (string, error) {
+	conf := client.Config
+	am := authMaker{
+		method:      param.Method,
+		reqURL:      makeRequestUrl(conf.Scheme, param.Bucket, conf.APPID, param.Region, param.URI),
+		secretID:    conf.SecretID,
+		secretKey:   conf.SecretKey,
+		startTime:   time.Now(),
+		authExpired: param.AuthExpired,
+		headers:     param.Headers,
+		params:      param.Params,
+	}
+
+	return am.getAuth()
 }
 
 // NewBucket 初始化一个Bucket
