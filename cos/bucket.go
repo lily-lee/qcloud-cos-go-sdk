@@ -55,7 +55,7 @@ func (bucket Bucket) AbortMultipartUpload(imur InitiateMultipartUploadResult) er
 // 注意：
 // 建议您及时完成分块上传或者舍弃分块上传，因为已上传但是未终止的块会占用存储空间进而产生存储费用
 // URI: /<ObjectName>
-func (bucket Bucket) CompleteMultipartUpload(imur InitiateMultipartUploadResult, param CompleteMultipartUpload) (CompleteMultipartUploadResult, error) {
+func (bucket Bucket) CompleteMultipartUpload(imur InitiateMultipartUploadResult, parts []Part) (CompleteMultipartUploadResult, error) {
 	var result CompleteMultipartUploadResult
 
 	reqUrl := bucket.makeReqUrl(fmt.Sprintf("/%s?uploadId=%s", imur.Key, imur.UploadID))
@@ -63,7 +63,9 @@ func (bucket Bucket) CompleteMultipartUpload(imur InitiateMultipartUploadResult,
 		"uploadId": imur.UploadID,
 	}
 
-	data, err := xml.Marshal(param)
+	data, err := xml.Marshal(CompleteMultipartUpload{
+		Part: parts,
+	})
 	if err != nil {
 		return result, errors.New("param error")
 	}
