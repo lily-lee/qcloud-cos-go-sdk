@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"log"
 	"testing"
+	"time"
 )
 
 func TestGetService(t *testing.T) {
@@ -108,5 +109,10 @@ func TestGetService(t *testing.T) {
 	var f string
 	xml.Unmarshal([]byte(a), &f)
 	log.Println(f)
+
+	d := "Wed, 18 Jan 2017 16:17:03 GMT"
+	layout := "Mon, 2 Jan 2006 15:04:05 GMT"
+	fo, _ := time.Parse(layout, d)
+	log.Println(fo)
 
 }

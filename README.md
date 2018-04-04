@@ -21,21 +21,6 @@ fmt.Println(r)
 
 ```
 
-# TODO
-- [ ] PutBucketsCORS
-- [ ] PutBucketLifecycle
-- [ ] PostObject
-- [ ] PostObjectCopy
-- [ ] GetObjectToFile
-- [ ] DownloadFile
-- [ ] UploadFile
-    - [ ] SliceFile
-    - [ ] Concurrent Uploading File Slices
-    - [ ] ...
-
-- [ ] Documents and Comments
-- [ ] Find Bugs and Fix them
-- [ ] ...
 
 # 参考资料
 - [腾讯云官方API文档](https://cloud.tencent.com/document/product/436/7751)

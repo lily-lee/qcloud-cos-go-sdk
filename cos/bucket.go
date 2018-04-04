@@ -8,6 +8,13 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"strconv"
+
+	"time"
+
+	"crypto/md5"
+	"encoding/base64"
+
 	"github.com/pkg/errors"
 )
 
@@ -110,6 +117,12 @@ func (bucket Bucket) DeleteMultiObject(headers map[string]string, param Delete) 
 	if err != nil {
 		return result, errors.New("param error")
 	}
+
+	if headers == nil {
+		headers = map[string]string{}
+	}
+	headers[CONTENT_TYPE] = "application/xml"
+	headers[CONTENT_MD5] = base64.StdEncoding.EncodeToString(md5.Sum(data)[:])
 
 	buffer := new(bytes.Buffer)
 	buffer.Write(data)
@@ -359,21 +372,32 @@ func (bucket Bucket) PutObjectACL(objectName string, headers map[string]string, 
 // 2. 在每次请求 Upload Part 时，需要携带 partNumber 和 uploadId，partNumber 为块的编号，支持乱序上传；
 // 3. 当传入 uploadId 和 partNumber 都相同的时候，后传入的块将覆盖之前传入的块。当 uploadId 不存在时会返回 404 错误，NoSuchUpload。
 // URI: /<ObjectName>
-func (bucket Bucket) UploadPart(objectName, uploadId, partNumber string, data io.Reader) error {
+//imur InitiateMultipartUploadResult, parts []Part
+func (bucket Bucket) UploadPart(imur InitiateMultipartUploadResult, data io.Reader, size int64, partNumber int) (Part, error) {
+	var result Part
 	params := map[string]string{
-		"uploadId":   uploadId,
-		"partNumber": partNumber,
+		"uploadId":   imur.UploadID,
+		"partNumber": strconv.Itoa(partNumber),
 	}
 	paramStr := mapToStr(params, "&")
-	reqUrl := bucket.makeReqUrl(fmt.Sprintf("/%s?%s", objectName, paramStr))
+	reqUrl := bucket.makeReqUrl(fmt.Sprintf("/%s?%s", imur.Key, paramStr))
 
 	resp, err := bucket.do("PUT", reqUrl, nil, params, data)
 	if err != nil {
-		return err
+		return result, err
 	}
 	defer resp.Body.Close()
 
-	return nil
+	result.ETag = resp.Header.Get(ETAG)
+	result.PartNumber = partNumber
+	result.Size = size
+	date := resp.Header.Get(DATE)
+	//Wed，18 Jan 2017 16:17:03 GMT
+	layout := "Mon, 2 Jan 2006 15:04:05 GMT"
+	t, _ := time.Parse(layout, date)
+	result.LastModified = t
+
+	return result, nil
 }
 
 // UploadPartCopy 分块上传文件
