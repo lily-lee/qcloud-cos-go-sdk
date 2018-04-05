@@ -1,26 +1,97 @@
 # qcloud-cos-go-sdk
 腾讯云 COS Golang SDK (XML API)
 
-# 安装
+# Install
 ```bash
 
 go get github.com/lily-lee/qcloud-cos-go-sdk/cos
 
 ```
 
-# 使用
+# Usage
 
 ```go
+package main
 
-c, err := cos.NewClient("AppID", "SecretID", "SecretKey", "https", 600)
-r, err := c.GetService()
-if err != nil {
-    HandleError...
+import (
+    "github.com/lily-lee/qcloud-cos-go-sdk/cos"
+    "log"
+)
+
+func main()  {
+    client, err := cos.NewClient("AppID", "SecretID", "SecretKey", "https", 600)
+    if err != nil {
+        // Handle Error
+    }
+    // GetService()
+    result, err := client.GetService()
+    if err != nil {
+        // Handle Error
+    }
+    log.Println("get service result:", result)
+    
+    bucket, err := client.NewBucket("BucketName", "Region")
+    if err != nil {
+        // Handle Error
+    }
+    
+    err = bucket.PutObjectFromFile("license", "./LICENSE", nil)
+    if err != nil {
+        // Handle Error
+    }
+    
 }
-fmt.Println(r)
-
 ```
 
+# API
+```bash
+godoc github.com/lily-lee/qcloud-cos-go-sdk/cos
+
+# then you can see all the types and functions. 
+
+# 实现了腾讯API提供的接口;
+# 在腾讯提供的API接口基础上，
+# 实现了PutObjectFromFile(),GetObjectToFile()等接口;
+# 下面简单列一下主要的type 和 func，没加参数和返回值。
+```
+- Client
+    - GetAuth() 
+    - NewBucket()
+    - GetService()
+    - DeleteBucket()
+    - DeleteBucketCORS()
+    - DeleteBucketLifecycle()
+    - GetBucket()
+    - GetBucketACL()
+    - GetBucketCORS()
+    - GetBucketLocation()
+    - GetBucketLifecycle()
+    - HeadBucket()
+    - ListMultipartUploads()
+    - PutBucket()
+    - PutBucketACL()
+    - PutBucketCORS() // TODO
+    - PutBucketLifecycle() // TODO
+    
+- Bucket
+    - AbortMultipartUpload()
+    - CompleteMultipartUpload()
+    - DeleteMultiObject()
+    - DeleteObject()
+    - GetObject()
+    - GetObjectToFile()
+    - GetObjectACL()
+    - HeadObject()
+    - InitiateMultipartUpload()
+    - ListParts()
+    - OptionsObject()
+    - PutObject()
+    - PutObjectFromFile()
+    - PutObjectCopy()
+    - PutObjectACL()
+    - UploadPart()
+    - UploadPartCopy()
+    
 
 # 参考资料
 - [腾讯云官方API文档](https://cloud.tencent.com/document/product/436/7751)
