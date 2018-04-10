@@ -117,12 +117,14 @@ func (bucket Bucket) DeleteMultiObject(headers map[string]string, param Delete) 
 	if err != nil {
 		return result, errors.New("param error")
 	}
+	md5Byte := md5.Sum(data)
 
 	if headers == nil {
 		headers = map[string]string{}
 	}
+
 	headers[CONTENT_TYPE] = "application/xml"
-	headers[CONTENT_MD5] = base64.StdEncoding.EncodeToString(md5.Sum(data)[:])
+	headers[CONTENT_MD5] = base64.StdEncoding.EncodeToString(md5Byte[:])
 
 	buffer := new(bytes.Buffer)
 	buffer.Write(data)
