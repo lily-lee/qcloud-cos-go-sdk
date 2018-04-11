@@ -51,11 +51,12 @@ godoc github.com/lily-lee/qcloud-cos-go-sdk/cos
 
 # 实现了腾讯API提供的接口;
 # 在腾讯提供的API接口基础上，
-# 实现了PutObjectFromFile(),GetObjectToFile()等接口;
+# 实现了PutObjectFromFile(),GetObjectToFile(), GetSTS()(获取临时凭证)等接口;
 # 下面简单列一下主要的type 和 func，没加参数和返回值。
 ```
 - Client
     - GetAuth() 
+    - GetSTS()
     - NewBucket()
     - GetService()
     - DeleteBucket()

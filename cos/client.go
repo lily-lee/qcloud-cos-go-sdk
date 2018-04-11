@@ -5,10 +5,13 @@ import (
 	"log"
 	"time"
 
+	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
+	"strconv"
+	"strings"
 )
 
 type (
@@ -50,6 +53,7 @@ func NewClient(appID, secretID, secretKey, scheme string, authExpired int64, opt
 	return client, err
 }
 
+// GetAuth return cos auth
 func (client Client) GetAuth(param AuthParam) (string, error) {
 	conf := client.Config
 	am := authMaker{
@@ -64,6 +68,63 @@ func (client Client) GetAuth(param AuthParam) (string, error) {
 	}
 
 	return am.getAuth()
+}
+
+// GetSTS return cos STS 临时密钥
+func (client Client) GetSTS(param STSReqParam) (STSReturn, error) {
+	var result STSReturn
+
+	appId := client.Config.APPID
+	bucketName := strings.Split(param.Bucket, "-")
+	resource := fmt.Sprintf("qcs::cos:%s:uid/%s:prefix//%s/%s", param.Region, appId, appId, bucketName[0])
+	statement := Statement{
+		Action: []string{"name/cos:*"},
+		Effect: "allow",
+		Principal: map[string][]string{
+			"qcs": []string{"*"},
+		},
+		Resource: []string{resource, resource + "/*"},
+	}
+
+	policy, err := json.Marshal(Policy{
+		Version:   "2.0",
+		Statement: []Statement{statement},
+	})
+	if err != nil {
+		return result, err
+	}
+
+	reqParams := map[string]string{
+		"Action":          STS_ACTION,
+		"policy":          string(policy),
+		"Nonce":           strconv.Itoa(getRand(99999)),
+		"name":            param.SessionName,
+		"Region":          param.Region,
+		"SecretId":        client.Config.SecretID,
+		"durationSeconds": strconv.Itoa(param.DurationSeconds),
+		"Timestamp":       strconv.FormatInt(time.Now().Unix(), 10),
+	}
+
+	method := "GET"
+	reqStr := getReqStr(method, STS_HOST, STS_PATH, reqParams)
+	reqParams["Signature"] = sign(reqStr, client.Config.SecretKey)
+	paramStr := mapToStr(reqParams, "&")
+	resp, err := client.do(method, STS_URL+"?"+paramStr, nil, nil, nil)
+	if err != nil {
+		return result, err
+	}
+
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return result, err
+	}
+
+	err = json.Unmarshal(body, &result)
+	printPretty(result)
+
+	return result, err
 }
 
 // NewBucket 初始化一个Bucket

@@ -8,6 +8,10 @@ var (
 const (
 	// get service
 	GET_SERVICE_HOST = "service.cos.myqcloud.com"
+	STS_HOST         = "sts.api.qcloud.com"
+	STS_PATH         = "/v2/index.php"
+	STS_URL          = "https://" + STS_HOST + STS_PATH
+	STS_ACTION       = "GetFederationToken"
 )
 
 // x-cos-acl values

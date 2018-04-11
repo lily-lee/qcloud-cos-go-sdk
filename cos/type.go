@@ -282,26 +282,33 @@ type ListMultipartUploadsRequestParam struct {
 }
 
 type STSReturn struct {
-	CodeDesc string  `json:"codeDesc"`
-	Message  string  `json:"message"`
-	Data     STSData `json:"data"`
-	Code     int     `json:"code"`
+	CodeDesc string
+	Message  string
+	Data     STSData
+	Code     int
 }
 
 type STSData struct {
-	ExpiredTime int64 `json:"expiredTime"`
+	ExpiredTime int64
 	Credentials struct {
-		SessionToken string `json:"sessionToken"`
-		TmpSecretId  string `json:"tmpSecretId"`
-		TmpSecretKey string `json:"tmpSecretKey"`
-	} `json:"credentials"`
-	FederatedUser string `json:"federatedUser"`
+		SessionToken string
+		TmpSecretId  string
+		TmpSecretKey string
+	}
+	FederatedUser string
+}
+
+type STSReqParam struct {
+	Bucket          string
+	Region          string
+	SessionName     string
+	DurationSeconds int
 }
 
 type STSParam struct {
-	Name            string `json:"name"`            // 用户昵称
-	Policy          string `json:"policy"`          // 策略语法（需要 base64 编码）
-	DurationSeconds int    `json:"durationSeconds"` // 指定临时证书的有效期，单位：秒。 不传的话默认 1800 秒, 最长有效期: 2 小时（7200 秒）
+	name            string `json:"name"`            // 用户昵称
+	policy          string `json:"policy"`          // 策略语法（需要 base64 编码）
+	durationSeconds int    `json:"durationSeconds"` // 指定临时证书的有效期，单位：秒。 不传的话默认 1800 秒, 最长有效期: 2 小时（7200 秒）
 	Signature       string
 	Timestamp       int64  // 时间戳
 	Nonce           int    // 随机数
@@ -318,4 +325,16 @@ type AuthParam struct {
 	Headers     map[string]string `json:"headers"`
 	Params      map[string]string `json:"params"`
 	AuthExpired int64             `json:"authExpired"`
+}
+
+type Policy struct {
+	Version   string      `json:"version"`
+	Statement []Statement `json:"statement"`
+}
+
+type Statement struct {
+	Action    []string            `json:"action"`
+	Effect    string              `json:"effect"`
+	Principal map[string][]string `json:"principal"`
+	Resource  []string            `json:"resource"`
 }

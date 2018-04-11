@@ -2,7 +2,9 @@ package cos
 
 import (
 	"fmt"
+	"math/rand"
 	"strings"
+	"time"
 
 	"encoding/json"
 )
@@ -51,4 +53,10 @@ func structToMap(v interface{}) map[string]string {
 	}
 	json.Unmarshal(b, &r)
 	return r
+}
+
+func getRand(n int) int {
+	rand.Seed(time.Now().UnixNano())
+
+	return rand.Intn(n)
 }

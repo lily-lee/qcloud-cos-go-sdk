@@ -44,7 +44,7 @@ func getDefaultConfig() *Config {
 
 func makeHost(bucketName, appID, region string) (host string) {
 	if bucketName == "" {
-		host = "service.cos.myqcloud.com"
+		host = GET_SERVICE_HOST
 	} else {
 		if !strings.Contains(bucketName, appID) {
 			bucketName = fmt.Sprintf("%s-%s", bucketName, appID)
