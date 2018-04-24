@@ -1,10 +1,13 @@
 # qcloud-cos-go-sdk
 腾讯云 COS Golang SDK (XML API)
 
-# Install
+# Install & Update
 ```bash
-
+// Install
 go get github.com/lily-lee/qcloud-cos-go-sdk/cos
+
+// Update
+go get -u github.com/lily-lee/qcloud-cos-go-sdk/cos
 
 ```
 
