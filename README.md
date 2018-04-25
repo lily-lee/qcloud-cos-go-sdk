@@ -3,10 +3,10 @@
 
 # Install & Update
 ```bash
-// Install
+# Install
 go get github.com/lily-lee/qcloud-cos-go-sdk/cos
 
-// Update
+# Update
 go get -u github.com/lily-lee/qcloud-cos-go-sdk/cos
 
 ```
@@ -46,55 +46,52 @@ func main()  {
 }
 ```
 
-# API
-```bash
-godoc github.com/lily-lee/qcloud-cos-go-sdk/cos
+# RoadMap
 
-# then you can see all the types and functions. 
+### Instance
+- [x] New Client (NewClient())
+- [x] New Bucket (client.NewBucket())
 
-# 实现了腾讯API提供的接口;
-# 在腾讯提供的API接口基础上，
-# 实现了PutObjectFromFile(),GetObjectToFile(), GetSTS()(获取临时凭证)等接口;
-# 下面简单列一下主要的type 和 func，没加参数和返回值。
-```
-- Client
-    - GetAuth() 
-    - GetSTS()
-    - NewBucket()
-    - GetService()
-    - DeleteBucket()
-    - DeleteBucketCORS()
-    - DeleteBucketLifecycle()
-    - GetBucket()
-    - GetBucketACL()
-    - GetBucketCORS()
-    - GetBucketLocation()
-    - GetBucketLifecycle()
-    - HeadBucket()
-    - ListMultipartUploads()
-    - PutBucket()
-    - PutBucketACL()
-    - PutBucketCORS() // TODO
-    - PutBucketLifecycle() // TODO
+### Service
+- [x] GET Service (client.GetService())
+
+### STS 临时密钥
+- [x] CAM STS (client.GetSTS())
+
+### Bucket
+- [x] DELETE Bucket (client.DeleteBucket())
+- [x] DELETE Bucket cors (client.DeleteBucketCORS())
+- [x] DELETE Bucket lifecycle (client.DeleteBucketLifecycle())
+- [x] GET Bucket (client.GetBucket())
+- [x] GET Bucket acl (client.GetBucketACL())
+- [x] GET Bucket cors (client.GetBucketCORS())
+- [x] GET Bucket location (client.GetBucketLocation()) 
+- [x] GET Bucket lifecycle (client.GetBucketLifecycle())
+- [x] HEAD Bucket (client.HeadBucket())
+- [x] List Multipart Uploads (client.ListMultipartUploads())
+- [x] PUT Bucket (client.PutBucket())
+- [x] PUT Bucket acl (client.PutBucketACL())
+- [ ] PUT Bucket cors (client.PutBucketCORS())
+- [ ] PUT Bucket lifecycle (client.PutBucketLifecycle())
     
-- Bucket
-    - AbortMultipartUpload()
-    - CompleteMultipartUpload()
-    - DeleteMultiObject()
-    - DeleteObject()
-    - GetObject()
-    - GetObjectToFile()
-    - GetObjectACL()
-    - HeadObject()
-    - InitiateMultipartUpload()
-    - ListParts()
-    - OptionsObject()
-    - PutObject()
-    - PutObjectFromFile()
-    - PutObjectCopy()
-    - PutObjectACL()
-    - UploadPart()
-    - UploadPartCopy()
+### Object
+- [x] Abort Multipart Upload (bucket.AbortMultipartUpload()
+- [x] Complete Multipart Upload (bucket.CompleteMultipartUpload())
+- [x] DELETE Multipart Objects (bucket.DeleteMultiObject())
+- [x] DELETE Object (bucket.DeleteObject())
+- [x] GET Object (bucket.GetObject())
+- [x] GET Object to local file (bucket.GetObjectToFile())
+- [x] GET Object acl (bucket.GetObjectACL())
+- [x] HEAD Object (bucket.HeadObject())
+- [x] Initiate Multipart Upload (bucket.InitiateMultipartUpload())
+- [x] List Parts (bucket.ListParts())
+- [x] OPTIONS Object (bucket.OptionsObject())
+- [x] PUT Object (bucket.PutObject())
+- [x] PUT Object from file (bucket.PutObjectFromFile())
+- [x] PUT Object acl (bucket.PutObjectACL())
+- [x] PUT Object - Copy (bucket.PutObjectCopy())
+- [x] Upload Part (bucket.UploadPart())
+- [x] Upload Part - Copy (bucket.UploadPartCopy())
     
 
 # 参考资料
