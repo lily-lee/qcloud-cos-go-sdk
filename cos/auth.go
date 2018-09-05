@@ -116,7 +116,7 @@ func paramsToString(params map[string]string) string {
 	paramList := make([]string, len(keys))
 	for i, k := range keys {
 		val := params[k]
-		paramList[i] = fmt.Sprintf("%s=%s", strings.ToLower(k), url.QueryEscape(val))
+		paramList[i] = fmt.Sprintf("%s=%s", strings.ToLower(k), url.PathEscape(val))
 	}
 
 	return strings.Join(paramList, "&")
